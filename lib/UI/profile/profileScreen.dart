@@ -1,5 +1,10 @@
+import 'package:chatapp/UI/auth/loginScreen.dart';
+import 'package:chatapp/helper/Profile.dart';
+import 'package:chatapp/provider/userRelatedTasks.dart';
 import 'package:chatapp/widgets/bottomNAvigation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -10,6 +15,21 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int selectedIndex = 3;
+  Profile userInfo = Profile(profilePic: "", phoneNumber: "", name: "");
+
+  @override
+  void didChangeDependencies() {
+    userInfo = Provider.of<UserRelatedTasks>(context).getUserinfo;
+    super.didChangeDependencies();
+  }
+
+  logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.clear();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container(
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundImage: NetworkImage(
-                        "https://images.pexels.com/photos/6474492/pexels-photo-6474492.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+                    backgroundImage: NetworkImage("${userInfo.profilePic}"),
                     child: Stack(
                       children: [
                         Positioned(
@@ -56,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         TextFormField(
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                            hintText: "Your Display Name",
+                            hintText: "${userInfo.name}",
                             focusedBorder: UnderlineInputBorder(
                               // borderRadius: BorderRadius.circular(25),
                               borderSide:
@@ -72,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         TextFormField(
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                            hintText: "Status",
+                            hintText: "${userInfo.phoneNumber}",
                             focusedBorder: UnderlineInputBorder(
                               // borderRadius: BorderRadius.circular(25),
                               borderSide:
@@ -102,7 +121,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                   color: Colors.redAccent,
-                  onPressed: () {},
+                  onPressed: () {
+                    logout();
+                  },
                   child: Text(
                     "Logout",
                     style: TextStyle(fontSize: 15),

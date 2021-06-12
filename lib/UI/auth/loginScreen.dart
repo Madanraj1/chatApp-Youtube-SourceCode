@@ -1,7 +1,9 @@
 import 'package:chatapp/chats/ChatScreen.dart';
 import 'package:chatapp/constant.dart';
+import 'package:chatapp/provider/userRelatedTasks.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -32,11 +34,15 @@ class _LoginScreenState extends State<LoginScreen> {
               otpSent
                   ? PinCodeTextField(
                       onDone: (value) {
-                        print(value);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatScreen()));
+                        Provider.of<UserRelatedTasks>(context, listen: false)
+                            .signinWithOtp(
+                                value, phoneController.text, context);
+
+                        // print(value);
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ChatScreen()));
                       },
                       pinBoxColor: Colors.white,
                       pinBoxWidth: size.width * 0.1,
@@ -91,6 +97,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {
                           otpSent = true;
                         });
+                        Provider.of<UserRelatedTasks>(context, listen: false)
+                            .otpVerification(phoneController.text, context);
                       },
                       child: Text(
                         "Login",

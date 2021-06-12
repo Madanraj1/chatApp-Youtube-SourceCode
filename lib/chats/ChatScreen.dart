@@ -1,8 +1,12 @@
 import 'package:chatapp/chats/components/ChatCard.dart';
 import 'package:chatapp/constant.dart';
+import 'package:chatapp/helper/Profile.dart';
 import 'package:chatapp/message/messageScreen.dart';
+import 'package:chatapp/provider/ChatMsgProvider.dart';
+import 'package:chatapp/provider/userRelatedTasks.dart';
 import 'package:chatapp/widgets/bottomNAvigation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -13,6 +17,20 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   int selectedIndex = 1;
+  List<Profile> allUser = [];
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserRelatedTasks>(context, listen: false).getProfileData();
+    Provider.of<ChatMsgProvider>(context, listen: false).getAllChatUsers();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    allUser = Provider.of<ChatMsgProvider>(context).getAllUsers;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +55,10 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: 10,
+                itemCount: allUser.length,
                 itemBuilder: (context, index) {
                   return ChatCard(
+                    person: allUser[index],
                     press: () {
                       Navigator.push(
                           context,

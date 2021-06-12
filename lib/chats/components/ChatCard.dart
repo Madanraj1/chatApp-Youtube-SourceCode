@@ -1,10 +1,13 @@
 import 'package:chatapp/constant.dart';
+import 'package:chatapp/helper/Profile.dart';
 import 'package:flutter/material.dart';
 
 class ChatCard extends StatelessWidget {
+  Profile person;
   final press;
   final chat;
-  ChatCard({Key? key, this.chat, this.press}) : super(key: key);
+  ChatCard({Key? key, this.chat, this.press, required this.person})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +22,7 @@ class ChatCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 24,
-                  backgroundImage: NetworkImage(
-                      "https://images.pexels.com/photos/6474492/pexels-photo-6474492.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+                  backgroundImage: NetworkImage(person.profilePic),
                 ),
                 Positioned(
                     right: 0,
@@ -46,7 +48,7 @@ class ChatCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "MAddy",
+                    person.name,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   SizedBox(height: 8),
