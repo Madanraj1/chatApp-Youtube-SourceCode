@@ -63,7 +63,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MessageScreen()));
+                              builder: (context) => MessageScreen(
+                                    profile: allUser[index].profilePic,
+                                    name: allUser[index].name,
+                                    uid: allUser[index].uid,
+                                  )));
                     },
                   );
                 }),

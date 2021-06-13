@@ -22,8 +22,7 @@ class _MessageScreenState extends State<MessageScreen> {
           children: [
             BackButton(),
             CircleAvatar(
-              backgroundImage: NetworkImage(
-                  "https://images.pexels.com/photos/6474492/pexels-photo-6474492.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+              backgroundImage: NetworkImage(widget.profile),
             ),
             SizedBox(width: kDefaultPadding * 0.75),
             Column(
@@ -31,7 +30,9 @@ class _MessageScreenState extends State<MessageScreen> {
               children: [
                 Text(
                   "${widget.name}",
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
                 Text(
                   "Active 3m ago",
@@ -53,7 +54,10 @@ class _MessageScreenState extends State<MessageScreen> {
           SizedBox(width: kDefaultPadding / 2),
         ],
       ),
-      body: Body(),
+      body: Body(
+        uid: widget.uid,
+        peerprofile: widget.profile,
+      ),
     );
   }
 }
